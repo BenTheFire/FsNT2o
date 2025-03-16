@@ -22,7 +22,6 @@ class SpellReference:
     # None if not present
     at_higher_levels: str
 
-
     def __init__(self, spell_name: str):
         self.spell_name = spell_name
 
@@ -36,7 +35,7 @@ class SpellReference:
                f"Components: {self.components}\n" \
                f"Duration: {self.duration}\n" \
                f"Description: {self.description_text}" + \
-                (f"\nAt Higher Levels: {self.at_higher_levels}" if self.at_higher_levels else "")
+            (f"\nAt Higher Levels: {self.at_higher_levels}" if self.at_higher_levels else "")
 
 
 def get_dnd_wikidot_com_page() -> DnDWikiReference:
@@ -64,7 +63,6 @@ def get_spell_data_from_web(url: str):
     is_cantrip = False
     if "cantrip" in html_scrape[2].lower():
         is_cantrip = True
-    print("Is Cantrip: ", is_cantrip)
     # endregion
 
     # region - Spell Reference Creation
