@@ -1,12 +1,12 @@
-class DnDWikiReference:
-    title: str
-    url: str
-    description: str
+from json import load
 
-    def __init__(self, title: str, url: str, description: str):
-        self.title = title
-        self.url = url
-        self.description = description
+
+def load_library(path: str):
+    with open(path) as origin:
+        return load(origin)
+
+
+dnd_lib = load_library("DnD-RefLib.json")
 
 
 class SpellReference:
@@ -36,10 +36,6 @@ class SpellReference:
                f"Duration: {self.duration}\n" \
                f"Description: {self.description_text}" + \
             (f"\nAt Higher Levels: {self.at_higher_levels}" if self.at_higher_levels else "")
-
-
-def get_dnd_wikidot_com_page() -> DnDWikiReference:
-    return DnDWikiReference("DnD Wiki", "https://dnd5e.wikidot.com/", "DnD Wikidot")
 
 
 def get_spell_data_from_web(url: str):
@@ -100,3 +96,14 @@ def dnd_wikidot_lookup_spell(search: str) -> SpellReference:
 startup = ("Thanks for using the DnD Wiki 5e module."
            " This module is designed to help you look up spells from the DnD 5e Wikidot page.")
 print(startup)
+
+spell_lib: dict = dnd_lib['Spells']
+
+from difflib import get_close_matches
+spell_lib_keys = list(spell_lib.keys())
+print(spell_lib_keys)
+arrraym = get_close_matches("", spell_lib_keys)
+print(arrraym)
+
+print()
+

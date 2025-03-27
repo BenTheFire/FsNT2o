@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import DnDWiki5e as DnD
+from DnDWiki5e import dnd_lib
+from difflib import get_close_matches
 
 admin_ids = [872960398922489896, 1241889974425616515, 292736680665022464]
 
@@ -11,6 +13,7 @@ with open('token.txt', 'r') as file:
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
 # endregion
+
 
 # region - Event Handlers
 @bot.event
@@ -114,6 +117,13 @@ async def get_user_by_id(interaction: discord.Interaction, user: discord.User):
 # region - DnD Commands
 @bot.tree.command(name="get_dnd_spell", description="Get a spell information lookup from https://DnDWikidot.com")
 async def get_dnd_spell(interaction: discord.Interaction, spell_name: str):
+    # check if the spell is in the library
+    matches = get_close_matches(spell_name, list(dnd_lib['Spells'].keys()))
+    if len(matches) == 0:
+        await interaction.response.send_message("Spell not found, try a different name")
+        return
+    spell_name = matches[0]
+    spell_name = dnd_lib['Spells'][spell_name]
     spell: DnD.SpellReference = DnD.dnd_wikidot_lookup_spell(spell_name)
     embed = discord.Embed(title=spell.spell_name)
     embed.add_field(name="Source", value=spell.source, inline=False)
